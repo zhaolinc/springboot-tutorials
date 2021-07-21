@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <!-- Bootstrap -->
+    <link th:href="@{/component/bootstrap-3.3.7/css/bootstrap.css}"
+          href="../../static/component/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet">
+    <link th:href="@{/component/inspinia/sweetalert.css}"
+          href="../../static/component/inspinia/sweetalert.css" rel="stylesheet">
+
+    <script th:src="@{/component/jquery-2.2.4.js}"
+            src="../../static/component/jquery-2.2.4.js"></script>
+    <script th:src="@{/component/bootstrap-3.3.7/js/bootstrap.js}"
+            src="../../static/component/bootstrap-3.3.7/js/bootstrap.js"></script>
+
+</head>
+<body>
+<div class="container" style="margin-top: 100px">
+    <div class="row clearfix">
+        <div class="col-md-3 column">
+        </div>
+        <div class="col-md-6 column">
+
+            <form class="form-horizontal" role="form" action="/user/login" method="post">
+                <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">
+              <span class="glyphicon glyphicon-user"></span>
+            </span>
+                    <input id="username" type="text" class="form-control" name="username" placeholder="请输入登录名" aria-describedby="basic-addon1">
+                </div>
+                <br>
+                <div class="input-group">
+            <span class="input-group-addon" id="basic-addon2">
+              <span class="glyphicon glyphicon-lock"></span>
+            </span>
+                    <input id="password" type="password" class="form-control" name="password" placeholder="请输入密码" aria-describedby="basic-addon1">
+                </div>
+                <br><br>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <button id="loginBtn" type="submit" class="btn btn-primary">登录</button>
+                        <button type="reset" class="btn btn-default" style="margin-left: 20px;">重置</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="col-md-3 column">
+        </div>
+    </div>
+</div>
+
+<!-- Sweet alert -->
+<script th:src="@{/component/inspinia/sweetalert.min.js}"
+        src="../../static/component/inspinia/sweetalert.min.js"></script>
+</body>
+</html>

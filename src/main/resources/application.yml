@@ -1,0 +1,78 @@
+spring:
+  application:
+    name: springboot-tutorials
+  thymeleaf:
+#    prefix: classpath:/templates/
+    cache: false
+    encoding: utf-8
+  # 热部署, 修改类和资源时不重启服务
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: src/main/java  #重启目录
+      exclude: static/**  #设置classpath下 static 目录内容修改后不重启。一般设置为静态资源目录
+    freemarker:
+      cache: false  #页面不加载缓存，修改即时生效
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://139.196.192.222:3306/lanqiao_tutorials?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      stat-view-servlet:
+        enabled: false
+        login-username: admin
+        login-password: sin0s0ft
+        allow: 20.20.10.1
+        url-pattern: "/druid/*"
+      web-stat-filter:
+        enabled: false
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+        url-pattern: "/*"
+      initialSize: 5
+      maxActive: 10
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      filter:
+        stat:
+          log-slow-sql: true
+    name: tutorial
+mybatis:
+  #  设置实体类的别名
+  type-aliases-package: com.lanqiao.tutorials.model
+  mapper-locations: classpath:mapper/**/*.xml
+pagehelper:
+  helperDialect: mysql
+  offsetAsPageNum: true
+  rowBoundsWithCount: true
+  reasonable: false
+  supportMethodsArguments: true
+  returnPageInfo: true
+  params: count=countSql
+# 开放所有的 Web endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+  # 输出 mybatis SQL日志
+logging:
+  level:
+    root: INFO
+    com.lanqiao.springboot.tutorials.mapper: DEBUG
+    com.lanqiao.springboot.tutorials.controller: DEBUG
+  pattern:
+    file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'
+    console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'
+  file:
+    name: tutorials.log
+#    path: #日志文件路径
+
+

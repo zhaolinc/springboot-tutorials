@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>更新员工信息</title>
+    <!-- Bootstrap -->
+    <link th:href="@{/component/bootstrap-3.3.7/css/bootstrap.css}"
+          href="../../static/component/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet">
+    <link th:href="@{/component/inspinia/sweetalert.css}"
+          href="../../static/component/inspinia/sweetalert.css" rel="stylesheet">
+
+    <script th:src="@{/component/jquery-2.2.4.js}"
+            src="../../static/component/jquery-2.2.4.js"></script>
+    <script th:src="@{/component/bootstrap-3.3.7/js/bootstrap.js}"
+            src="../../static/component/bootstrap-3.3.7/js/bootstrap.js"></script>
+</head>
+<body>
+<div class="container" style="margin-top: 50px;">
+    <div class="row clearfix">
+        <div class="col-md-2 column">
+        </div>
+        <div class="col-md-8 column">
+            <form id="addForm" action="/emps" class="form-horizontal" method="post" th:object="${emp}">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">姓名</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="ename" th:value="*{ename}" class="form-control" id="inputEmail3" placeholder="请输入姓名">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-2 control-label">工作</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="job" th:value="*{job}" class="form-control" id="inputPassword3" placeholder="请输入工作">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputMgr" class="col-sm-2 control-label">经理编号</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="mgr" th:value="*{mgr}" class="form-control" id="inputMgr" placeholder="请输入经理编号">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputHiredate" class="col-sm-2 control-label">入职日期</label>
+                    <div class="col-sm-10">
+                        <input type="date" name="hiredate"  th:value="*{#dates.format(hiredate, 'yyyy-MM-dd')}" class="form-control" id="inputHiredate" placeholder="请输入入职日期">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputSal" class="col-sm-2 control-label">工资</label>
+                    <div class="col-sm-10">
+                        <input type="number" name="sal" th:value="*{sal}" class="form-control" id="inputSal" placeholder="请输入工资">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputComm" class="col-sm-2 control-label">奖金</label>
+                    <div class="col-sm-10">
+                        <input type="number" name="comm" th:value="*{comm}" class="form-control" id="inputComm" placeholder="请输入奖金">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputComm" class="col-sm-2 control-label">部门</label>
+                    <div class="col-sm-10">
+                        <select name="deptno" id="addDeptno" class="form-control">
+                            <option value="">---- 请选择 ----</option>
+                            <option value="10" th:selected="*{deptno eq 10}">ACCOUNTING</option>
+                            <option value="20" th:selected="*{deptno eq 20}">RESEARCH</option>
+                            <option value="30" th:selected="*{deptno eq 30}">SALES</option>
+                            <option value="40" th:selected="*{deptno eq 40}">OPERATIONS</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <button id="loginBtn" type="submit" class="btn btn-primary">更新</button>
+                        <button type="reset" class="btn btn-default" style="margin-left: 20px;">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2 column">
+        </div>
+    </div>
+</div>
+</body>
+</html>

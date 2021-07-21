@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工列表</title>
+    <!-- Bootstrap -->
+    <link th:href="@{/component/bootstrap-3.3.7/css/bootstrap.css}"
+          href="../../static/component/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet">
+    <link th:href="@{/component/inspinia/sweetalert.css}"
+          href="../../static/component/inspinia/sweetalert.css" rel="stylesheet">
+
+    <script th:src="@{/component/jquery-2.2.4.js}"
+            src="../../static/component/jquery-2.2.4.js"></script>
+    <script th:src="@{/component/bootstrap-3.3.7/js/bootstrap.js}"
+            src="../../static/component/bootstrap-3.3.7/js/bootstrap.js"></script>
+</head>
+<body>
+<!--container开始-->
+<div class="container" style="margin-top: 30px;">
+
+    <!-- 查询表单开始 -->
+    <div class="row clearfix">
+        <div class="col-md-8 column col-md-offset-2">
+            <form id="queryForm" class="form-horizontal" role="form" action="/emps" method="get">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">姓名</span>
+                    <input id="ename" name="ename" type="text" class="form-control" th:value="${param.ename}" placeholder="请输入员工姓名" aria-describedby="basic-addon1">
+
+                    <span class="input-group-addon" id="basic-addon2" style="margin-left: 10px;">工作</span>
+                    <input id="job" name="job" type="text" class="form-control" th:value="${param.job}" placeholder="请输入工作" aria-describedby="basic-addon1">
+
+                    <span class="input-group-addon" id="basic-addon3" style="margin-left: 10px;">部门</span>
+                    <select name="deptno" id="deptno" class="form-control">
+                        <option value="">--请选择--</option>
+                        <option value="10">ACCOUNTING</option>
+                        <option value="20">RESEARCH</option>
+                        <option value="30">SALES</option>
+                        <option value="40">OPERATIONS</option>
+                    </select>
+                </div>
+                <br>
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <button id="queryBtn" type="submit" class="btn btn-primary btn-block">查询</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="reset" class="btn btn-default btn-block">重置</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <!-- 查询表单结束 -->
+
+    <!-- 员工列表开始 -->
+    <div class="row clearfix">
+        <div class="col-md-10 column col-md-offset-1">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-th-list"></span> 员工列表
+                    <button class="btn btn-default pull-right" id="addemp" style="position: relative;top: -7px; right: -10px;"
+                            data-toggle="modal" data-target=".bs-example-modal-lg" data-backdrop="static">
+                        <span class="glyphicon glyphicon-plus"></span> 添加员工
+                    </button>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>编号</th>
+                            <th>姓名</th>
+                            <th>工作</th>
+                            <th>经理编号</th>
+                            <th>入职日期</th>
+                            <th>工资</th>
+                            <th>奖金</th>
+                            <th>部门号</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="empList">
+                            <tr th:each="emp,status : ${employeeList}">
+                                <td th:text="${emp.empno}"></td>
+                                <td th:text="${emp.ename}"></td>
+                                <td th:text="${emp.job}"></td>
+                                <td th:text="${emp.mgr}"></td>
+                                <td th:text="${#dates.format(emp.hiredate, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${emp.sal}"></td>
+                                <td th:text="${emp.comm}"></td>
+                                <td th:text="${emp.deptno}"></td>
+                                <td>
+                                    <a th:href="@{|/emps/${emp.empno}|}">更新</a>
+                                    <a th:href="@{|/emps/delete/${emp.empno}|}">删除</a>
+                                </td>
+                            </tr>
+                            <tr th:remove="all">
+                                <td>7698</td>
+                                <td>BLAKE</td>
+                                <td>SALESMAN</td>
+                                <td>7839</td>
+                                <td>1987-07-13</td>
+                                <td>2450.0</td>
+                                <td>0</td>
+                                <td>30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <nav aria-label="Page navigation" class="text-center" style="margin: 0px;padding: 0px;">
+                        <ul class="pagination">
+                            <li th:if="${employeeList.pageNum le employeeList.pages}">
+                                <a th:href="@{/emps(pageNum=1)}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li th:if="${employeeList.pageNum}>1">
+                                <a th:href="@{/emps(pageNum=${employeeList.pageNum}-1)}">&lt;</a>
+                            </li>
+                            <li th:if="${employeeList.pageNum-3 gt 1}">
+                                <a th:text="${employeeList.pageNum-4}" th:href="@{/emps(pageNum=${employeeList.pageNum}-4)}"></a>
+                            </li>
+                            <li th:if="${employeeList.pageNum-2 gt 1}">
+                                <a th:text="${employeeList.pageNum-3}" th:href="@{/emps(pageNum=${employeeList.pageNum}-3)}"></a>
+                            </li>
+                            <li th:if="${employeeList.pageNum-1 gt 1}">
+                                <a th:text="${employeeList.pageNum-2}" th:href="@{/emps(pageNum=${employeeList.pageNum}-2)}"></a>
+                            </li>
+                            <li th:if="${employeeList.pageNum gt 1}" >
+                                <a th:text="${employeeList.pageNum-1}" th:href="@{/emps(pageNum=${employeeList.pageNum}-1)}"></a>
+                            </li>
+                            <!--/* 当前页 */-->
+                            <li th:if="${employeeList.pageNum le employeeList.pages}" th:class="${employeeList.pageNum le employeeList.pages ? 'active':''}">
+                                <a th:text="${employeeList.pageNum}" th:href="@{/emps(pageNum=${employeeList.pageNum})}"></a>
+                            </li>
+                            <li th:if="${employeeList.pageNum+1 le employeeList.pages}">
+                                <a th:text="${employeeList.pageNum+1}" th:href="@{/emps(pageNum=${employeeList.pageNum}+1)}"></a>
+                            </li>
+                            <li th:if="${employeeList.pageNum+2 le employeeList.pages}">
+                                <a th:text="${employeeList.pageNum+2}" th:href="@{/emps(pageNum=${employeeList.pageNum}+2)}"></a>
+                            </li>
+                            <li th:if="${employeeList.pageNum+3 le employeeList.pages}">
+                                <a th:text="${employeeList.pageNum+3}" th:href="@{/emps(pageNum=${employeeList.pageNum}+3)}"></a>
+                            </li>
+                            <li th:if="${employeeList.pageNum lt employeeList.pages}">
+                                <a th:href="@{/emps(pageNum=${employeeList.pageNum}+1)}">&gt;</a>
+                            </li>
+                            <li th:if="${employeeList.pageNum lt employeeList.pages}">
+                                <a th:href="@{/emps(pageNum=${employeeList.pages})}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 员工列表结束 -->
+
+    <!--底部开始-->
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div th:with="year='2021',month='02'">
+                <div th:replace="common/footer :: copyright(${year},${month})"></div>
+            </div>
+        </div>
+    </div>
+    <!--底部结束-->
+</div>
+<!--container结束-->
+
+<!--模态框-->
+<!-- update modal -->
+<div id="addModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加员工</h4>
+            </div>
+            <div class="modal-body">
+                <form id="addForm" class="form-horizontal" action="/emps/insertEmp" method="post" >
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="ename" class="form-control" id="inputEmail3" placeholder="请输入姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-2 control-label">工作</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="job" class="form-control" id="inputPassword3" placeholder="请输入工作">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputMgr" class="col-sm-2 control-label">经理编号</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="mgr" class="form-control" id="inputMgr" placeholder="请输入经理编号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputHiredate" class="col-sm-2 control-label">入职日期</label>
+                        <div class="col-sm-10">
+                            <input type="date" name="hiredate" class="form-control" id="inputHiredate" placeholder="请输入入职日期">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSal" class="col-sm-2 control-label">工资</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="sal" class="form-control" id="inputSal" placeholder="请输入工资">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputComm" class="col-sm-2 control-label">奖金</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="comm" class="form-control" id="inputComm" placeholder="请输入奖金">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputComm" class="col-sm-2 control-label">部门</label>
+                        <div class="col-sm-10">
+                            <select name="deptno" id="addDeptno" class="form-control">
+                                <option value="">--请选择--</option>
+                                <option value="10">ACCOUNTING</option>
+                                <option value="20">RESEARCH</option>
+                                <option value="30">SALES</option>
+                                <option value="40">OPERATIONS</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-4">
+                            <input type="submit" class="form-control" value="添加">
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="reset" class="form-control" value="重置">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sweet alert -->
+<script th:src="@{/component/inspinia/sweetalert.min.js}"
+        src="../../static/component/inspinia/sweetalert.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+  <div th:fragment="copyright(year,monyh)" class="text-center">
+    <h5> @ [[${year}]]年 [[${month}]]月蓝桥版权所有</h5>
+    <h5 th:text="| ${year} 蓝桥版权所有|"></h5>
+
+  </div>
+</body>
+</html>

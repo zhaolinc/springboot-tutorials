@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.tutorials.mapper.UsersMapper">
+
+    <resultMap id="BaseResultMap" type="com.lanqiao.tutorials.model.Users">
+            <id property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="username" column="user_name" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        user_id,user_name,password
+    </sql>
+
+    <select id="selectForLogin" parameterType="Users" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> FROM USERS
+        where  USER_NAME = #{username} and PASSWORD = #{password}
+    </select>
+</mapper>
